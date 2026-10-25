@@ -1,0 +1,15 @@
+# Never commit credentials, databases, caches, or local deployment state.
+rclone.conf
+*.env
+.env
+.env.*
+*.db
+*.db-*
+*.sqlite*
+*.key
+*.pem
+data/
+cache/
+backups/
+*.log
+
