@@ -4,6 +4,22 @@
 
 这篇记录整理于 2026 年 10 月 25 日。配置来自实际部署，账号、密码、域名和容器名称均已替换为示例。**不要直接照抄自己的密码到命令、文章或 GitHub。**
 
+## 一键部署脚本
+
+新服务器可使用 [install.sh](install.sh)，详细操作见 [脚本说明](docs/installer.md)。已有 Navidrome 时会停止安装，保护现有实例；当前教程中的服务器无需重装。
+
+```bash
+curl -fL --proto '=https' --tlsv1.2 \
+  https://raw.githubusercontent.com/SamueruTokeisou/1panel-rclone-navidrome-guide/main/install.sh \
+  -o install.sh
+bash install.sh help
+sudo bash install.sh install
+```
+
+需要事先安装 Docker/Compose v2，支持 Debian/Ubuntu + systemd。脚本交互输入凭据，自动配置只读挂载、独立容器、缓存与开机服务，默认只监听本地；域名和 HTTPS 仍通过 1Panel 设置。它创建的容器可在面板查看，但不会登记为应用商店应用。
+
+脚本还提供 `status`、`start`、`add-cloud`。`add-cloud` 仅管理脚本创建的实例。仓库包含自动检查工作流和离线测试；脚本与扩展方案尚未在真实新服务器完成端到端部署测试。
+
 ## 本次完成到哪一步
 
 | 项目 | 本次情况 |
@@ -300,4 +316,3 @@ du -sh /var/cache/rclone
 - [Navidrome Docker 安装](https://www.navidrome.org/docs/installation/docker/)、[多音乐库](https://www.navidrome.org/docs/usage/features/multi-library/)
 
 本文由实际部署过程整理，并使用 AI 协助成文。已验证范围以开头的记录为准；后续网盘扩展需要在自己的环境中逐项检查。
-
