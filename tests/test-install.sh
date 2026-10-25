@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 ROOT=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)
-# shellcheck source=../install.sh
+# Literal dollar signs below are intentional injection/escaping test fixtures.
+# shellcheck disable=SC2016
+# shellcheck source=install.sh
 source "$ROOT/install.sh"
 temp=$(mktemp -d)
 trap 'rm -rf -- "$temp"' EXIT
@@ -39,7 +41,10 @@ grep -Fq '127.0.0.1:40108:4533' "$temp/compose.yml"
 grep -Fq '/mnt/nd-music/cloud:/music:ro' "$temp/compose.yml"
 grep -Fq '/mnt/nd-music/second:/music-second:ro' "$temp/compose.yml"
 grep -Fq "${STATE}/data:/data" "$temp/compose.yml"
-! grep -q 'rclone.conf\|password\|privileged' "$temp/compose.yml"
+assert_reject grep -q 'rclone.conf\|password\|privileged' "$temp/compose.yml"
+if command -v docker >/dev/null && docker compose version >/dev/null 2>&1; then
+  docker compose -f "$temp/compose.yml" config --quiet
+fi
 pass 'additional cloud preserves /data and the original music mapping'
 
 render_app_unit > "$temp/app.service"
