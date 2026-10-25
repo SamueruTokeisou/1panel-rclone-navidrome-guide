@@ -1,0 +1,15 @@
+# frp v0.71.1. Replace certificate paths; token file is private, never commit it.
+bindAddr = "0.0.0.0"
+bindPort = 7443
+proxyBindAddr = "127.0.0.1"
+allowPorts = [{single = 18080}]
+maxPortsPerClient = 1
+auth.method = "token"
+auth.tokenSource.type = "file"
+auth.tokenSource.file.path = "/opt/personal-cloud-frp/token"
+auth.additionalScopes = ["HeartBeats", "NewWorkConns"]
+transport.tls.force = true
+transport.tls.certFile = "/opt/1panel/www/sites/panel.example.com/ssl/fullchain.pem"
+transport.tls.keyFile = "/opt/1panel/www/sites/panel.example.com/ssl/privkey.pem"
+log.to = "console"
+log.level = "info"
