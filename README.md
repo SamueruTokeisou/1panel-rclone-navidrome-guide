@@ -20,6 +20,12 @@ sudo bash install.sh install
 
 脚本还提供 `status`、`start`、`add-cloud`。`add-cloud` 仅管理脚本创建的实例。仓库包含自动检查工作流和离线测试；脚本与扩展方案尚未在真实新服务器完成端到端部署测试。
 
+## 后续实战：把 Windows 电脑也接进来
+
+新增 **[Windows 网盘 → FRP → WebDAV → Navidrome 完整记录](docs/windows-cloud.md)**，包含本地目录配置、HTTPS 反向代理、只读挂载、多音乐库和日常维护。令牌能否永久有效、到期怎么换，见 **[令牌期限与更换](docs/token-renewal.md)**。
+
+这部分已接入真实电脑音乐源，扫描 19 首、2 张专辑，并验证浏览器连续播放超过两分钟。一键脚本的范围仍是服务器 Rclone + Navidrome，不包含 Windows 网盘与 FRP。
+
 ## 本次完成到哪一步
 
 | 项目 | 本次情况 |
@@ -33,7 +39,8 @@ sudo bash install.sh install
 | 服务检查 | 容器目录可读，HTTP 返回 200，扫描流程完成 |
 | 网页检查 | HTTPS 可访问，管理员创建后能进入音乐库 |
 | 恢复检查 | 手动重启挂载服务后，容器恢复读取 |
-| 尚未验证 | 当时 Music 为空，未验证真实歌曲播放、拖动进度和大规模扫描；未重启整台 VPS 测试 |
+| 后续电脑音乐源 | 已接入 Windows WebDAV，扫描 19 首、2 张专辑，浏览器播放超过两分钟，详见后续实战 |
+| 尚未验证 | 初次 InfiniCloud Music 为空；任意拖动进度、大规模扫描、全部格式、整机重启与断网恢复仍未验证 |
 
 这里的版本是本次部署记录，不代表以后安装时的最新版本。首次安装和更新都应查看自己的应用商店与上游说明。
 
@@ -279,7 +286,7 @@ cloud2:Music → /mnt/cloud2/Music  → 容器 /music2  → 第二网盘音乐�
 
 Navidrome 已支持多音乐库。先让新网盘在宿主机和容器内都可读，再去“Settings → Libraries”添加 `/music2`，并为普通用户分配权限。这种方式便于判断是哪一个网盘出故障，也不用合并同名路径。[官方多音乐库说明](https://www.navidrome.org/docs/usage/features/multi-library/)
 
-具体命令、完整服务模板和不同网盘的选择方法见 **[添加第二个及更多网盘](docs/multiple-clouds.md)**。扩展部分依据官方文档编写，本次尚未接入第二个真实网盘。
+通用命令、服务模板和不同网盘的选择方法见 **[添加第二个及更多网盘](docs/multiple-clouds.md)**。其中 Windows FileBrowser WebDAV 已实际接入，见 **[电脑网盘实战](docs/windows-cloud.md)**；其他后端示例仍需自行验证。
 
 ## 九、维护与排错
 
