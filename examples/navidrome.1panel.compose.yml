@@ -1,0 +1,26 @@
+# For the 1Panel installation editor; variables are supplied by 1Panel.
+# Preserve the existing /data mapping when updating an installed instance.
+services:
+  navidrome:
+    image: deluan/navidrome:0.64.2
+    container_name: ${CONTAINER_NAME}
+    restart: always
+    networks:
+      - 1panel-network
+    ports:
+      - "127.0.0.1:${PANEL_APP_PORT_HTTP}:4533"
+    volumes:
+      - ./data/data:/data
+      - /mnt/cloud/Music:/music:ro
+    user: 1000:1000
+    environment:
+      ND_SCANSCHEDULE: "1h"
+      ND_LOGLEVEL: info
+      ND_SESSIONTIMEOUT: "24h"
+      ND_BASEURL: ""
+    labels:
+      createdBy: "Apps"
+networks:
+  1panel-network:
+    external: true
+
