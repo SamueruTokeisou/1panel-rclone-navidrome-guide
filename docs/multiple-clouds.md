@@ -1,6 +1,6 @@
 # 添加第二个及更多网盘
 
-这部分是未来扩展方案，依据上游文档整理，尚未在本次服务器上接入第二个真实网盘。操作前先备份已有 Navidrome 数据与应用配置。
+这部分提供依据上游文档整理的通用扩展方案。后续已实际接入 Windows FileBrowser WebDAV，并验证音乐扫描与播放，见 [电脑网盘实战](windows-cloud.md)；其他后端示例尚未逐一实测。操作前先备份已有 Navidrome 数据与应用配置。
 
 建议每个网盘独立挂载，再分别加入 Navidrome 音乐库。现有 `cloud:Music → /mnt/cloud/Music → /music` 保持不变。
 
@@ -132,4 +132,3 @@ ExecStartPost=-/usr/bin/docker restart YOUR_NAVIDROME_CONTAINER
 对当前环境，优先采用“独立挂载 + 多音乐库”，等实际使用一段时间再决定是否需要合并。Rclone union 是另一种可选方案，并非添加第二个网盘的必需步骤。[Union 官方说明](https://rclone.org/union/)
 
 [返回完整安装文章](../README.md)
-
