@@ -1,0 +1,32 @@
+name: Check installer
+on:
+  push:
+    paths:
+      - install.sh
+      - tests/**
+      - .github/workflows/check-installer.yml
+  pull_request:
+    paths:
+      - install.sh
+      - tests/**
+      - .github/workflows/check-installer.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install ShellCheck if needed
+        run: |
+          if ! command -v shellcheck >/dev/null; then
+            sudo apt-get update
+            sudo apt-get install -y shellcheck
+          fi
+      - name: Bash syntax
+        run: bash -n install.sh tests/test-install.sh
+      - name: ShellCheck
+        run: shellcheck -x install.sh tests/test-install.sh
+      - name: Offline behavior tests
+        run: bash tests/test-install.sh
