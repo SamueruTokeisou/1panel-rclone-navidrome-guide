@@ -88,7 +88,9 @@ load_settings() {
 validate_rows() {
   local id remote folder config cache
   while IFS=$'\t' read -r id remote folder config cache; do
-    valid_id "$id" && valid_id "$remote" && one_line "$folder" && valid_size "$cache" || die '网盘登记记录无效。'
+    if ! valid_id "$id" || ! valid_id "$remote" || ! one_line "$folder" || ! valid_size "$cache"; then
+      die '网盘登记记录无效。'
+    fi
     [[ $config == "$STATE/remotes/$id.conf" || $config == /root/.config/rclone/rclone.conf ]] || die '配置文件路径无效。'
     [[ -f $config ]] || die "配置文件不存在：$config"
   done < "$STATE/remotes.tsv"
@@ -186,7 +188,9 @@ add_remote() {
     config="$STATE/remotes/$id.conf"
     [[ ! -e $config ]] || die "已有未登记配置 $config。请核查后改用另一名称，不会覆盖凭据。"
     url=$(prompt 'WebDAV 完整 HTTPS URL（不能包含账号密码）')
-    [[ $url == https://* && $url != *'@'* ]] && one_line "$url" || die '需要不内嵌凭据的 HTTPS URL。'
+    if [[ $url != https://* || $url == *'@'* ]] || ! one_line "$url"; then
+      die '需要不内嵌凭据的 HTTPS URL。'
+    fi
     user=$(prompt 'WebDAV Connection ID / 用户名')
     one_line "$user" || die '用户名不能为空或包含控制字符。'
     printf 'Apps Password（输入不回显）: ' >&2
@@ -241,7 +245,7 @@ start_stack() {
   systemctl enable nd-music.service
   systemctl restart nd-music.service
   local attempt
-  for attempt in {1..30}; do
+  for ((attempt=1; attempt<=30; attempt++)); do
     if curl --fail --silent --max-time 2 "http://127.0.0.1:$PORT/ping" >/dev/null; then
       say "成功：本地 HTTP 检查通过。1Panel 反向代理目标：http://127.0.0.1:$PORT"
       say '服务由 systemd 管理，可在 1Panel 容器列表看到；不会注册为应用商店应用。'
