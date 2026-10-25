@@ -1,0 +1,17 @@
+# Replace YOUR_NAVIDROME_CONTAINER before installation.
+[Unit]
+Description=Windows PC music via WebDAV (read only)
+Wants=network-online.target
+After=network-online.target docker.service personal-cloud-frps.service
+
+[Service]
+Type=notify
+ExecStart=/usr/bin/rclone mount pccloud: /mnt/pc-cloud --config=/root/.config/rclone/rclone.conf --read-only --allow-other --uid=1000 --gid=1000 --umask=022 --vfs-cache-mode=full --cache-dir=/var/cache/rclone-pc --vfs-cache-max-size=1G --vfs-cache-max-age=24h --vfs-cache-min-free-space=5G --buffer-size=8M --dir-cache-time=1m --poll-interval=0 --log-level=INFO
+ExecStartPost=-/usr/bin/docker restart YOUR_NAVIDROME_CONTAINER
+ExecStop=/usr/bin/fusermount3 -u /mnt/pc-cloud
+Restart=on-failure
+RestartSec=15
+TimeoutStartSec=90
+
+[Install]
+WantedBy=multi-user.target
