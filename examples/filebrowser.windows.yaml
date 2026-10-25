@@ -1,0 +1,15 @@
+# FileBrowser Quantum v2.0.2-stable; program/config outside the shared folder.
+http:
+  listen: "127.0.0.1"
+  port: 18081
+server:
+  sources:
+    - path: 'D:\网盘'
+      config:
+        defaultEnabled: true
+auth:
+  methods:
+    password:
+      enabled: true
+      minLength: 12
+      signup: false
