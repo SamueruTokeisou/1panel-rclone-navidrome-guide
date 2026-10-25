@@ -1,0 +1,16 @@
+[Unit]
+Description=InfiniCloud Music read-only mount
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=notify
+ExecStart=/usr/bin/rclone mount cloud:Music /mnt/cloud/Music --config=/root/.config/rclone/rclone.conf --read-only --allow-other --uid=1000 --gid=1000 --umask=022 --vfs-cache-mode=full --cache-dir=/var/cache/rclone --vfs-cache-max-size=3G --vfs-cache-max-age=24h --vfs-cache-min-free-space=5G --buffer-size=8M --dir-cache-time=5m --poll-interval=0 --log-level=INFO
+ExecStop=/usr/bin/fusermount3 -u /mnt/cloud/Music
+Restart=on-failure
+RestartSec=10
+TimeoutStartSec=90
+
+[Install]
+WantedBy=multi-user.target
+
