@@ -1,0 +1,21 @@
+# frp v0.71.1. Replace the documentation IP and certificate serverName.
+serverAddr = "203.0.113.10"
+serverPort = 7443
+loginFailExit = false
+auth.method = "token"
+auth.tokenSource.type = "file"
+auth.tokenSource.file.path = "D:/Software/PersonalCloud/tunnel-token.txt"
+auth.additionalScopes = ["HeartBeats", "NewWorkConns"]
+transport.tls.enable = true
+transport.tls.serverName = "panel.example.com"
+transport.tls.trustedCaFile = "D:/Software/PersonalCloud/trusted-ca.pem"
+log.to = "D:/Software/PersonalCloud/frpc.log"
+log.level = "info"
+log.maxDays = 7
+
+[[proxies]]
+name = "personal-cloud"
+type = "tcp"
+localIP = "127.0.0.1"
+localPort = 18081
+remotePort = 18080
