@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
+# Literal dollar signs are intentional injection/escaping test fixtures.
+# shellcheck disable=SC2016
 set -Eeuo pipefail
 ROOT=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)
-# Literal dollar signs below are intentional injection/escaping test fixtures.
-# shellcheck disable=SC2016
 # shellcheck source=install.sh
 source "$ROOT/install.sh"
 temp=$(mktemp -d)
